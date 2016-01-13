@@ -1,0 +1,12 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-8">
+		<h1>Raspberry Pi status</h1>
+		<h2>{{ stats.name[1] }}</h2>
+		<p>{{ stats.ip_address }}</p>
+	</div>
+</div>
+{% endblock %}
