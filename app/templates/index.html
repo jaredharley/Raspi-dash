@@ -3,10 +3,36 @@
 
 {% block content %}
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-12">
 		<h1>Raspberry Pi status</h1>
 		<h2>{{ stats.name[1] }}</h2>
 		<p>{{ stats.ip_address }}</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-6">
+		<h4>Hardware</h4>
+		<table class="table table-striped">
+			<tr><td>Uptime</td>
+			<td><span class="pull-right">{{ stats.uptime }}</span></td>
+			</tr>
+			<tr><td>Board temperature</td>
+				<td><span class="pull-right">{{ stats.temp_f }} &deg;F</span></td>
+			</tr>
+		</table>
+		<h4>CPU</h4>
+		<table class="table table-striped">
+		<tr><td>1 minute</td><td><span class="pull-right">{{stats.cpu['onemin']*100}}%</span></td></tr>
+		<tr><td>5 minutes</td><td><span class="pull-right">{{stats.cpu['fivemin']*100}}%</span></td></tr>
+		<tr><td>15 minutes</td><td><span class="pull-right">{{stats.cpu['fifteenmin']*100}}%</span></td></tr>
+		</table>
+	</div>
+	<div class="col-sm-6">
+		<h4>Network</h4>
+		<table class="table table-striped">
+			<tr><td>Down</td><td><span class="pull-right">{{stats.network['down']}} b/s</span></td></tr>
+			<tr><td>Up</td><td><span class="pull-right">{{stats.network['up']}} b/s</span></td></tr>
+		</table>
 	</div>
 </div>
 {% endblock %}
