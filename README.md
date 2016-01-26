@@ -17,15 +17,12 @@ Install flask into the virtual environment
 
     flask/bin/pip install flask
 
-Make directories
-
-    mkdir -p app/static
-    mkdir app/templates
-
 Run dashboard using `run.py`
 
     pi: ~/git/Raspi-dash$ ./run.py
     * Running on http://0.0.0.0:5001/ (Press CTRL+C to quit)
     * Restarting with stat
+
+Visit your Raspberry Pi's new website on port 5001 (for example, http://192.168.0.1:5001/)
 
   [1]: https://github.com/ColinWaddell/CurrantPi
