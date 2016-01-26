@@ -6,7 +6,10 @@ import time
 
 class Stats():
 
-    def get_memory():
+    def __init__(self):
+		print('init stats')
+
+    def get_memory(self):
         """Returns memory statistics from /proc/meminfo as a dict
         Dict keys:
         total    - Total memory
@@ -28,7 +31,7 @@ class Stats():
         memusedless = memused - membuffers - memcache
         return {'total':memtotal,'free':memfree,'used':memused,'buffer':membuffers,'cache':memcache,'usedless':memusedless}
 
-    def get_ip_address():
+    def get_ip_address(self):
         """Returns the ip address."""
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
@@ -41,7 +44,7 @@ class Stats():
             s.close()
         return IP
 
-    def get_temperature(scale='c'):
+    def get_temperature(self, scale='c'):
         """Returns the temperature of the board from /sys/class/thermal/thermal_zone0/temp
         as a float rounded to 2 decimal places (or -1 if the temp couldn't be read).
         
@@ -58,7 +61,7 @@ class Stats():
             else:
                 return round(temp,2)
 
-    def get_uptime():
+    def get_uptime(self):
         """Returns the uptime from /proc/uptime as a dict object.
         Dict values:
         days, hours, minutes, seconds
@@ -74,7 +77,7 @@ class Stats():
         d, h = divmod(h, 24)
         return {'days':d,'hours':h,'minutes':m,'seconds':s}
 
-    def get_last_boot():
+    def get_last_boot(self):
         """Retuns a datetime object of the last boot time from the command
         who -b."""
         lastboot = subprocess.check_output(['who','-b'])
@@ -86,15 +89,24 @@ class Stats():
         lbdate = datetime.strptime(lastboot[2]+","+lastboot[3], "%Y-%m-%d,%H:%M")
         return lbdate
 
-    def get_filesystem():
+    def get_filesystem(self):
         """Returns each row of the df -h output as a string in a list."""
         fs = subprocess.check_output(['df','-h'])
         if len(fs) <= 0:
             return
         fs = fs.split('\n')
-        return fs
+        outList = []
+        for index, line in enumerate(fs):
+            if index == 0:
+                continue
+            splitLine=[]
+            split = line.split()
+            for index, i in enumerate(split):
+                splitLine.append(i)
+            outList.append(splitLine)
+        return outList
 
-    def get_cpu():
+    def get_cpu(self):
         """Returns a dict with the one, five, and fifteen minute load
         averages from uptime.
         Dict values:
@@ -113,7 +125,7 @@ class Stats():
     
         return {'onemin':float(avg[0]),'fivemin':float(avg[1]),'fifteenmin':float(avg[2])}
 
-    def get_network():
+    def get_network(self):
         """Returns a dict with the up and down traffic as bytes per second."""
         path = '/sys/class/net/eth0/statistics/'
         with open(path+'rx_bytes') as rx:
@@ -133,14 +145,17 @@ class Stats():
         stats = [rx2-rx1,tx2-tx1]
         return {'down':stats[0],'up':stats[1]}
 
-    ip_address = get_ip_address()
-    memory = get_memory()
-    temp_f = get_temperature('f')
-    temp_c = get_temperature('c')
-    raw_uptime = get_uptime()
-    uptime = "%dd %dh %0dm" % (raw_uptime['days'], raw_uptime['hours'], raw_uptime['minutes'])
-    last_boot = get_last_boot()
-    filesystem = get_filesystem()
-    cpu = get_cpu()
-    network = get_network()
-    name = os.uname()
+#    ip_address = get_ip_address()
+#    memory = get_memory()
+#    temp_f = get_temperature('f')
+#    temp_c = get_temperature('c')
+#    raw_uptime = get_uptime()
+#    uptime = "%dd %dh %0dm" % (raw_uptime['days'], raw_uptime['hours'], raw_uptime['minutes'])
+#    last_boot = get_last_boot()
+#    filesystem = get_filesystem()
+#    cpu = get_cpu()
+#    network = get_network()
+#    name = os.uname()
+#    time = datetime.now()
+#    print('stats was accessed')
+

@@ -4,23 +4,21 @@
 {% block content %}
 <div class="row">
 	<div class="col-md-12">
-		<h1>Raspberry Pi status</h1>
-		<h2>{{ stats.name[1] }}</h2>
-		<p>{{ stats.ip_address }}</p>
+		<h2>Status Dashboard: {{ stats.name[1] }}</h2>
 	</div>
 </div>
 <div class="row">
 	<div class="col-sm-6">
-		<h4>Hardware</h4>
+		<h3><i class="fa fa-heartbeat"></i> Hardware</h3>
 		<table class="table table-striped">
 			<tr><td>Uptime</td>
 			<td><span class="pull-right">{{ stats.uptime }}</span></td>
 			</tr>
 			<tr><td>Board temperature</td>
-				<td><span class="pull-right">{{ stats.temp_f }} &deg;F</span></td>
+				<td><span class="pull-right">{{'%0.1f' | format(stats.temp_f|float)}} &deg;F</span></td>
 			</tr>
 		</table>
-		<h4>CPU</h4>
+		<h3><i class="fa fa-area-chart"></i> CPU load average</h3>
 		<table class="table table-striped">
 		<tr><td>1 minute</td><td><span class="pull-right">{{stats.cpu['onemin']*100}}%</span></td></tr>
 		<tr><td>5 minutes</td><td><span class="pull-right">{{stats.cpu['fivemin']*100}}%</span></td></tr>
@@ -28,11 +26,120 @@
 		</table>
 	</div>
 	<div class="col-sm-6">
-		<h4>Network</h4>
+		<h3><i class="fa fa-wifi"></i> Network <small>{{stats.ip_address}}</small></h3>
 		<table class="table table-striped">
-			<tr><td>Down</td><td><span class="pull-right">{{stats.network['down']}} b/s</span></td></tr>
-			<tr><td>Up</td><td><span class="pull-right">{{stats.network['up']}} b/s</span></td></tr>
+			<tr><td><i class="fa fa-toggle-down"></i> Down</td><td><span class="pull-right">{{stats.network['down']}} b/s</span></td></tr>
+			<tr><td><i class="fa fa-toggle-up"></i> Up</td><td><span class="pull-right">{{stats.network['up']}} b/s</span></td></tr>
 		</table>
+		<h3><i class="fa fa-sliders"></i> Memory</h3>
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<td colspan="4">
+						<div class="row row-memory">
+							<div class="col-xs-9">
+								<div class="progress">
+									<div class="progress-bar progress-bar-used" 
+										role="progressbar" 
+										aria-valuenow="{{(stats.memory['used']/stats.memory['total'])*100}}"
+										aria-valuemin="0" 
+										aria-valuemax="{{stats.memory['total']}}"
+										style="width: {{(stats.memory['usedless']/stats.memory['total'])*100}}%">
+										<span class="sr-only">{{(stats.memory['used']/stats.memory['total'])*100}}% Used</span>
+									</div>  
+									<div class="progress-bar progress-bar-buffers"
+										role="progressbar"
+										aria-valuenow="{{stats.memory['buffer']}}"
+										aria-valuemin="0" 
+										aria-valuemax="{{stats.memory['total']}}" 
+										style="width: {{(stats.memory['buffer']/stats.memory['total'])*100}}%">
+										<span class="sr-only">{{(stats.memory['buffer']/stats.memory['total'])*100}}% Buffers</span>
+									</div>
+									<div class="progress-bar progress-bar-cache" 
+										role="progressbar" 
+										aria-valuenow="{{stats.memory['cache']}}" 
+										aria-valuemin="0" 
+										aria-valuemax="{{stats.memory['total']}}" 
+										style="width: {{(stats.memory['cache']/stats.memory['total'])*100}}%">
+										<span class="sr-only">{(stats.memory['cache']/stats.memory['total'])*100}}% Cache</span>
+									</div>  
+									<div class="progress-bar progress-bar-free" 
+										role="progressbar" 
+										aria-valuenow="{{stats.memory['free']}}"
+										aria-valuemin="0" 
+										aria-valuemax="{{stats.memory['total']}}" 
+										style="width: {{(stats.memory['free']/stats.memory['total'])*100}}%">
+										<span class="sr-only">{{(stats.memory['free']/stats.memory['total'])*100}}% Free</span>
+									</div>  
+								</div>
+							</div>
+							<div class="col-xs-3">
+								<p class="text-right">{{'%0.2f' | format(stats.memory['total']/1024|float)}} MB</p>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="membar-key">
+						<span class="membar-key-used">
+							{{'%0.1f'|format((stats.memory['usedless']/stats.memory['total'])*100|float)}}%
+						</div>
+					</td>
+					<td>
+						<p>Used ({{'%0.1f'|format(stats.memory['usedless']/1024|float)}} MB)</p>
+					</td>
+					<td class="membar-key">
+						<span class="membar-key-buffers">
+							{{'%0.1f'|format((stats.memory['buffer']/stats.memory['total'])*100|float)}}%
+						</div>
+					</td>
+					<td>
+						<p>Buffered ({{'%0.1f'|format(stats.memory['buffer']/1024|float)}} MB)</p>
+					</td>
+				</tr>
+		
+				<tr>
+					<td class="membar-key">
+						<span class="membar-key-cache">
+							{{'%0.1f'|format((stats.memory['cache']/stats.memory['total'])*100|float)}}%
+						</div>
+					</td>
+					<td>
+						<p>Cached ({{'%0.1f'|format(stats.memory['cache']/1024|float)}} MB)</p>
+					</td>
+					<td class="membar-key">
+						<span class="membar-key-free">
+							{{'%0.1f'|format((stats.memory['free']/stats.memory['total'])*100|float)}}%
+						</div>
+					</td>
+					<td>
+						<p>Free ({{'%0.1f'|format(stats.memory['free']/1024|float)}} MB)</p>
+					</td>
+				</tr> 
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<h3><i class="fa fa-hdd-o"></i> Storage</h4>
+		<table class="table table-striped">
+			<tr>
+			<th>Filesystem</th><th>Size</th><th>Used</th><th>Available</th><th>% used</th><th>Mounted on</th>
+			</tr>
+		{% for fs in stats.filesystem %}
+			<tr>
+			{% for f in fs %}
+				<td>{{ f }}</td>
+			{% endfor %}
+			</tr>
+		{% endfor %}
+		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<p>Stats loaded at {{ stats.time }}</p>
 	</div>
 </div>
 {% endblock %}

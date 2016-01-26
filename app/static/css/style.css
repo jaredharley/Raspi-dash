@@ -1,0 +1,77 @@
+.table>tbody>tr>td{
+  padding: 10px 8px 6px;
+}
+
+/*  Status Bars:
+ * 
+ *    Customisations used for the memory-bar and the
+ *    used-storage bars. Trying to use colours that
+ *    it's easy to read black text off of, and that
+ *    made sense in context: 
+ *    i.e. Red for "Used Memory"
+ *    Though the green is being used for the Storage
+ *    Used so the bottom half of the page isn't 
+ *    overpowering.  
+ */
+.progress{
+  margin-bottom: 0;
+}
+
+.progress-bar{
+  color: #FFF;
+}
+
+/* Give a little extra room for Total Ram */
+.row-memory div:nth-child(2) {
+  padding-left:0;
+}
+
+.membar-key > span.membar-key-used,
+.progress-bar-used{
+  background: #c9302c;
+  color: #ffffff;
+}
+
+.membar-key > span.membar-key-buffers,
+.progress-bar-buffers{
+  background: #d58512;
+  color: #ffffff;
+}
+
+.membar-key > span.membar-key-cache,
+.progress-bar-cache{
+  background: #31b0d5;
+  color: #ffffff;
+}
+
+.membar-key > span.membar-key-free,
+.progress-bar-free{
+  background: #449d44;
+  color: #ffffff;
+}
+
+.progress-bar-custom{
+  color: #000;
+  background-color: #8db4a3;
+  padding: 0 0 0 4px;
+}
+
+.membar-key > p{
+  display: inline;
+}
+
+td.membar-key{
+  width:4em;
+}
+
+.membar-key > span{
+  margin-right: 5px;
+  font-size: 11px;
+  background-color: #ddd;
+  color: #000;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-align: center;
+  display: block;
+  width:100%;
+}
